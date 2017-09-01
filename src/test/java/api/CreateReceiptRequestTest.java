@@ -13,33 +13,33 @@ import static org.hamcrest.collection.IsEmptyCollection.empty;
 
 public class CreateReceiptRequestTest {
 
-    private final Validator validator = Validators.newValidator();
+  private final Validator validator = Validators.newValidator();
 
-    @Test
-    public void testValid() {
-        CreateReceiptRequest receipt = new CreateReceiptRequest();
-        receipt.merchantName = "OK";
+  @Test
+  public void testValid() {
+    CreateReceiptRequest receipt = new CreateReceiptRequest();
+    receipt.merchantName = "OK";
 
-        receipt.value = new BigDecimal(33.44);
-        assertThat(validator.validate(receipt), empty());
-    }
+    receipt.value = new BigDecimal(33.44);
+    assertThat(validator.validate(receipt), empty());
+  }
 
-    @Test
-    public void testMissingMerchant() {
-        CreateReceiptRequest receipt = new CreateReceiptRequest();
-        receipt.value = new BigDecimal(33.44);
+  @Test
+  public void testMissingMerchant() {
+    CreateReceiptRequest receipt = new CreateReceiptRequest();
+    receipt.value = new BigDecimal(33.44);
 
-        validator.validate(receipt);
-        assertThat(validator.validate(receipt), hasSize(1));
-    }
+    validator.validate(receipt);
+    assertThat(validator.validate(receipt), hasSize(1));
+  }
 
-    @Test
-    public void testMissingValue() {
-        CreateReceiptRequest receipt = new CreateReceiptRequest();
-        receipt.merchantName = "OK";
+  @Test
+  public void testMissingValue() {
+    CreateReceiptRequest receipt = new CreateReceiptRequest();
+    receipt.merchantName = "OK";
 
-        validator.validate(receipt);
-        assertThat(validator.validate(receipt), hasSize(1));
-    }
+    validator.validate(receipt);
+    assertThat(validator.validate(receipt), hasSize(1));
+  }
 
 }
