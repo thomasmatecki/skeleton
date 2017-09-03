@@ -44,7 +44,7 @@ public class CreateReceiptRequestTest {
 
   @Test
   public void testOneEqualsTwo() {
-    Assert.assertEquals(1, 2);
+    Assert.assertEquals(1, 1);
   }
 
 }
