@@ -2,6 +2,7 @@ package api;
 
 
 import io.dropwizard.jersey.validation.Validators;
+import org.junit.Assert;
 import org.junit.Test;
 
 import javax.validation.Validator;
@@ -40,4 +41,10 @@ public class CreateReceiptRequestTest {
     validator.validate(receipt);
     assertThat(validator.validate(receipt), hasSize(1));
   }
+
+  @Test
+  public void testOneEqualsTwo() {
+    Assert.assertEquals(1, 2);
+  }
+
 }
