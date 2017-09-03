@@ -1,6 +1,5 @@
 package dao;
 
-import api.ReceiptResponse;
 import generated.tables.records.ReceiptsRecord;
 import org.jooq.Configuration;
 import org.jooq.DSLContext;
@@ -13,25 +12,28 @@ import static com.google.common.base.Preconditions.checkState;
 import static generated.Tables.RECEIPTS;
 
 public class ReceiptDao {
-    DSLContext dsl;
+  DSLContext dsl;
 
-    public ReceiptDao(Configuration jooqConfig) {
-        this.dsl = DSL.using(jooqConfig);
-    }
+  public ReceiptDao(Configuration jooqConfig) {
+    this.dsl = DSL.using(jooqConfig);
+  }
 
-    public int insert(String merchantName, BigDecimal amount) {
-        ReceiptsRecord receiptsRecord = dsl
-                .insertInto(RECEIPTS, RECEIPTS.MERCHANT, RECEIPTS.AMOUNT)
-                .values(merchantName, amount)
-                .returning(RECEIPTS.ID)
-                .fetchOne();
+  public int insert(String merchantName, BigDecimal amount) {
 
-        checkState(receiptsRecord != null && receiptsRecord.getId() != null, "Insert failed");
+    ReceiptsRecord receiptsRecord = dsl
+        .insertInto(RECEIPTS, RECEIPTS.MERCHANT, RECEIPTS.AMOUNT)
+        .values(merchantName, amount)
+        .returning(RECEIPTS.ID)
+        .fetchOne();
 
-        return receiptsRecord.getId();
-    }
+    checkState(receiptsRecord != null && receiptsRecord.getId() != null, "Insert failed");
 
-    public List<ReceiptsRecord> getAllReceipts() {
-        return dsl.selectFrom(RECEIPTS).fetch();
-    }
+    return receiptsRecord.getId();
+  }
+
+  public List<ReceiptsRecord> getAllReceipts() {
+    return dsl.selectFrom(RECEIPTS).fetch();
+  }
+
+
 }

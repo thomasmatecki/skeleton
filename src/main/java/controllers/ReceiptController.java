@@ -17,6 +17,7 @@ import static java.util.stream.Collectors.toList;
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public class ReceiptController {
+
   final ReceiptDao receipts;
 
   public ReceiptController(ReceiptDao receipts) {
