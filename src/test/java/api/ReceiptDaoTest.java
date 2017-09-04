@@ -19,7 +19,7 @@ public class ReceiptDaoTest extends AbstractDaoTest {
 
 
   @Test
-  public void testInsertThenDelete() {
+  public void testInsertThenTag() {
 
     int receiptId = receiptDao.insert("Bread and Butter", new BigDecimal(6.78));
 

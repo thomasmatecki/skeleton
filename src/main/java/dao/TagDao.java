@@ -39,6 +39,7 @@ public class TagDao {
     dsl.delete(TAGS)
         .where(TAGS.ID.equal(receiptId))
         .and(TAGS.TAG.equal(tag)).execute();
+
   }
 
   public List<ReceiptsRecord> getAllReceiptsForTag(String tagName) {
