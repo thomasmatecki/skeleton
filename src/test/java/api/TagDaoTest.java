@@ -11,7 +11,7 @@ import org.junit.Test;
 
 import javax.validation.Validator;
 
-public class TagDaoTest {
+public class TagDaoTest extends AbstractDaoTest {
 
 
   public static org.jooq.Configuration setupJooq() {
@@ -47,9 +47,4 @@ public class TagDaoTest {
     Assert.assertFalse(dao.exists(16, "Pizza"));
 
   }
-
-
-
-
-
 }

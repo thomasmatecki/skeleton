@@ -3,7 +3,6 @@ package dao;
 import generated.tables.records.ReceiptsRecord;
 import org.jooq.Configuration;
 import org.jooq.DSLContext;
-import org.jooq.Result;
 import org.jooq.impl.DSL;
 
 import java.util.List;
@@ -31,7 +30,7 @@ public class TagDao {
         .from(TAGS)
         .where(TAGS.ID.equal(receiptId))
         .and(TAGS.TAG.equal(tag))
-        .fetchOne(0, int.class);
+        .fetchOne(0, Integer.class);
 
   }
 
@@ -44,16 +43,12 @@ public class TagDao {
 
   public List<ReceiptsRecord> getAllReceiptsForTag(String tagName) {
 
-    Result<?> result =
-        dsl.select()
-            .from(TAGS)
-            .join(RECEIPTS)
-            .on(TAGS.ID.eq(RECEIPTS.ID))
-            .where(TAGS.TAG.equal(tagName))
-            .fetch();
-
-    return (List<ReceiptsRecord>) result;
+    return dsl.select()
+        .from(TAGS)
+        .join(RECEIPTS)
+        .on(TAGS.ID.eq(RECEIPTS.ID))
+        .where(TAGS.TAG.equal(tagName))
+        .fetchInto(RECEIPTS);
   }
-
 
 }

@@ -23,6 +23,7 @@ public class TagController {
   @GET
   @Path("/{tag}")
   public List<ReceiptResponse> allReceipts(@PathParam("tag") String tagName) {
+
     return tagDao.getAllReceiptsForTag(tagName)
         .stream()
         .map(ReceiptResponse::new)
