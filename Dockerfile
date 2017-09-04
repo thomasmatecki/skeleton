@@ -9,10 +9,11 @@ FROM openjdk:8
 ADD  build/distributions/skeleton.tar  /
 
 # Convenience if we ever want to log into the image and snoop around
-WORKDIR /skeleton
+ADD appconfig.yml /skeleton/
+
 
 # The server is going to run on 8080 inside the running container, so we need to expose that port
 EXPOSE 8080
 
 # When a new container is created, the server program should be run.
-ENTRYPOINT ["/skeleton/bin/skeleton"]
+ENTRYPOINT ["/skeleton/bin/skeleton","server", "appconfig.yml"]
