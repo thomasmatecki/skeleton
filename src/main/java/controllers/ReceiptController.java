@@ -2,6 +2,7 @@ package controllers;
 
 import api.CreateReceiptRequest;
 import api.ReceiptResponse;
+//import dao.ReceiptDao;
 import dao.ReceiptDao;
 import generated.tables.records.ReceiptsRecord;
 

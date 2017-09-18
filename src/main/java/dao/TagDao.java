@@ -43,7 +43,6 @@ public class TagDao {
   }
 
   public List<ReceiptsRecord> getAllReceiptsForTag(String tagName) {
-
     return dsl.select()
         .from(TAGS)
         .join(RECEIPTS)

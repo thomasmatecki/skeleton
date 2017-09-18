@@ -13,6 +13,7 @@ public class TagDaoTest extends AbstractDaoTest {
   public void testInsertThenCheckExistence() {
     tagDao.insert(16, "Pizza");
     Assert.assertTrue(tagDao.exists(16, "Pizza"));
+
   }
 
 /*@Test

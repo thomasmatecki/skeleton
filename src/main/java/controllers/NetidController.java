@@ -11,10 +11,8 @@ import javax.ws.rs.core.MediaType;
 @Produces(MediaType.APPLICATION_JSON)
 public class NetidController {
 
-  // You can specify additional @Path steps; they will be relative
-  // to the @Path defined at the class level
   @GET
   public String netid() {
-    return "tpm93";
+    return "tpm93"  ;
   }
 }

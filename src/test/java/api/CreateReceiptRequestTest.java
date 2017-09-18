@@ -2,11 +2,12 @@ package api;
 
 
 import io.dropwizard.jersey.validation.Validators;
-import org.junit.Assert;
 import org.junit.Test;
 
+import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 import java.math.BigDecimal;
+import java.util.Set;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasSize;
@@ -19,7 +20,8 @@ public class CreateReceiptRequestTest {
   public void testValid() {
     CreateReceiptRequest receipt = new CreateReceiptRequest();
 
-    receipt.merchant = "OK";
+    //receipt.merchant = "OK";
+    receipt.merchant = "";
     receipt.amount = new BigDecimal(33.44);
 
     assertThat(validator.validate(receipt), empty());
@@ -36,11 +38,16 @@ public class CreateReceiptRequestTest {
 
   @Test
   public void testMissingMerchant() {
+
+    // Setup
     CreateReceiptRequest receipt = new CreateReceiptRequest();
     receipt.amount = new BigDecimal(33.44);
 
     validator.validate(receipt);
-    assertThat(validator.validate(receipt), hasSize(1));
+
+    Set<ConstraintViolation<CreateReceiptRequest>> result = validator.validate(receipt);
+    //Make sure state is expected
+    assertThat(result, hasSize(1));
   }
 
 }
