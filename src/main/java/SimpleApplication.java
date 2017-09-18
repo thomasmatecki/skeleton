@@ -1,9 +1,9 @@
-import dao.ReceiptDao;
-import dao.TagDao;
 import controllers.NetidController;
 import controllers.ReceiptController;
-import controllers.TagController;
 import controllers.StaticHtmlController;
+import controllers.TagController;
+import dao.ReceiptDao;
+import dao.TagDao;
 import io.dropwizard.Application;
 import io.dropwizard.Configuration;
 import io.dropwizard.setup.Environment;
