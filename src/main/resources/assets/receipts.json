@@ -1,0 +1,27 @@
+[
+  {
+    "id": 1,
+    "merchantName": "Riverwalk Bar And Grill",
+    "value": 5.50,
+    "created": "17:51:45",
+    "tags":[]
+  },
+  {
+    "id": 2,
+    "merchantName": "The Italian Restaurant",
+    "value": 6.89,
+    "created": "17:51:45",
+    "tags":[]
+
+  },
+  {
+    "id": 3,
+    "merchantName": "Starbucks",
+    "value": 1.05,
+    "created": "17:51:45",
+    "tags":[
+      "coffee",
+      "tea"
+    ]
+  }
+]

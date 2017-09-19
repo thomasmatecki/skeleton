@@ -2,58 +2,93 @@
 <html>
 
 <head>
-    <link rel="stylesheet" href="style.css" />
-    <script data-require="jquery@*" data-semver="3.1.1" src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-    <style>
-        #container {border: 1px solid brown;}
-        H1 {float: left;}
+    <link rel="stylesheet" href="assets/style.css"/>
 
-        .button{
-            background-color:#55A;
-            border: 1px solid #229;
-            width: 100px;
-            float: right;
-            font-size: 2em;
-            color: white;
-            text-align: center;
-        }
+    <script data-require="jquery@*" data-semver="3.1.1"
+            src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 
-        #receiptList {
-            border: 1px solid green;
-            clear: both;
-        }
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+          crossorigin="anonymous">
 
-        .receipt {
-            background-color: #eee;
-            margin-bottom: 5px;
-        }
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+            integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+            crossorigin="anonymous"></script>
 
-    </style>
-    <script>
-        // This is the idiomatic way to ensure that JQuery does not
-        // execute until the page has loaded
-        $(function(){
-            const api = ""; // <- do not need a root api URL if this page is served directly by the API
 
-            $.getJSON(api+"/receipts", function(receipts){
-                for(var i=0; i < receipts.length; i++) {
-                    var receipt = receipts[i];
-                    $(`<div class="receipt">${receipt.merchantName}<div><span class="receiptTag">t1</span></div></div>`)
-                        .appendTo($("#receiptList"));
-                }
-
-            })
-        })
-    </script>
+    <script src="assets/main.js"></script>
 </head>
 
 <body>
-<DIV id="container">
-    <h1>My receipts</h1>
-    <div class="button">+</div>
-    <div id="receiptList">
-    </div>
-</DIV>
-</body>
+<div class="container">
 
+
+    <div class="row  header">
+
+        <div class="col-xs-12 col-sm-6 col-md-8"><h2>
+            My Receipts</h2>
+        </div>
+
+        <div class="col-xs-6 col-md-4">
+            <button type="button"
+                    class="btn btn-primary btn-lg pull-right"
+                    data-toggle="modal" data-target="#new-receipt">Add Receipt
+            </button>
+        </div>
+
+    </div>
+
+    <div class="modal fade" role="dialog" id="new-receipt">
+
+        <div class="modal-dialog modal-sm" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Add Receipt</h4>
+                </div>
+
+                <div class="modal-body">
+                    <form id="receipt-form">
+                        <div class="form-group">
+                            <input type="text" class="form-control" id="merchant" placeholder="Merchant">
+                        </div>
+                        <div class="form-group">
+                            <input type="text" class="form-control" id="amount" placeholder="Amount">
+                        </div>
+                    </form>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button"
+                            class="btn btn-primary"
+                            data-dismiss="modal">Cancel
+                    </button>
+
+                    <button type="submit"
+                            class="btn btn-default"
+                            onclick="submitReceipt(this)"
+                            data-dismiss="modal">Save
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <table class="table">
+        <tr>
+            <th>Created</th>
+            <th>Merchant</th>
+            <th>Amount</th>
+            <th>Tags</th>
+        </tr>
+
+        </thead>
+        <tbody id="receiptList">
+
+        </tbody>
+    </table>
+
+</div>
+
+</body>
 </html>

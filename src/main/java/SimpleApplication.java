@@ -6,6 +6,8 @@ import dao.ReceiptDao;
 import dao.TagDao;
 import io.dropwizard.Application;
 import io.dropwizard.Configuration;
+import io.dropwizard.assets.AssetsBundle;
+import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import org.eclipse.jetty.server.session.SessionHandler;
 import org.h2.jdbcx.JdbcConnectionPool;
@@ -17,6 +19,13 @@ public class SimpleApplication extends Application<Configuration> {
   public static void main(String[] args) throws Exception {
     new SimpleApplication().run(args);
   }
+
+  /* Add static asset bundle*/
+  @Override
+  public void initialize(Bootstrap<Configuration> bootstrap) {
+    bootstrap.addBundle(new AssetsBundle());
+  }
+
 
   private static void enableSessionSupport(Environment env) {
     env.servlets().setSessionHandler(new SessionHandler());
@@ -35,6 +44,7 @@ public class SimpleApplication extends Application<Configuration> {
     return jooqConfig;
   }
 
+
   @Override
   public void run(Configuration cfg, Environment env) {
     // Create any global resources you need here
@@ -46,7 +56,7 @@ public class SimpleApplication extends Application<Configuration> {
     // you need class and method @Path annotations!
     env.jersey().register(new StaticHtmlController());
     env.jersey().register(new ReceiptController(receiptDao));
-    env.jersey().register(new TagController(tagDao));
+    env.jersey().register(new TagController(tagDao, receiptDao));
     env.jersey().register(new NetidController());
   }
 }

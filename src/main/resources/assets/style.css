@@ -1,0 +1,23 @@
+#container {
+/ / border: 1 px solid brown;
+}
+
+h1 {
+    float: left;
+}
+
+body {
+    padding-top: 70px;
+}
+
+
+.tag {
+    display: inline-block;
+    padding: 0 25px;
+    height: 50px;
+    font-size: 16px;
+    line-height: 50px;
+    border-radius: 25px;
+    background-color: #f1f1f1;
+}
+
