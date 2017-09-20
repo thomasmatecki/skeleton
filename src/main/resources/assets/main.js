@@ -1,3 +1,4 @@
+
 const api = "";
 const tagInputPrefix = "tag-input-";
 const tagSpanPrefix = "tags-";
@@ -11,7 +12,6 @@ function submitReceipt(elem) {
   $.ajax({
     type: "POST",
     url: api + "/receipts",
-
     data: JSON.stringify({
       merchant: $("input#merchant").val(),
       amount: $("input#amount").val()
@@ -26,6 +26,8 @@ function submitReceipt(elem) {
 
 /**
  *
+ * @param receiptId
+ * @param tag
  */
 function toggleReceiptTag(receiptId, tag) {
 
@@ -89,9 +91,8 @@ function removeTag(elem) {
 
 }
 
-
 function tagHtml(receiptId, tag) {
-  return $(`<div id="tag-${receiptId}-${tag}" class="tag" onclick="removeTag(this)">${tag}<span class=""></span></div>`);
+  return $(`<div id="tag-${receiptId}-${tag}" class="tagValue tag" onclick="removeTag(this)">${tag}<span class=""></span></div>`);
 }
 
 function appendReceipt(receipt) {
@@ -99,34 +100,29 @@ function appendReceipt(receipt) {
   var inputId = tagInputPrefix + receipt.id;
   var receiptTagSpanId = tagSpanPrefix + receipt.id;
 
-  var row = $(`<tr id="receipt-${receipt.id} class="receipt">
-        <th>
-            <h4 class="receiptId">${receipt.id}</h4>
-            <h4>${receipt.created}</h4>
-              </th>
-              <td>
-                  <h4>${receipt.merchantName}</h4>
-              </td>
-              <td>
-                  <h4>$${receipt.value.toFixed(2)}</h4>
-              </td>
-              <td><span id="${receiptTagSpanId}"
-                        class="receiptTag">
-                          
-              <button   id="add-tag-${receipt.id}"
-                        type="button"
-                        class="add-tag btn btn-primary pull-left"
-                        onclick="toggleTagInput(this, ${receipt.id})">Add Tag</button>
-                        
-              <input    id="${inputId}"
-                        type="text"
-                        class="form-control"
-                        placeholder="new tag"
-                        onkeypress="tagInputKeyPress(event)">
-                     
-              </span></td></tr>`
-  );
-
+  var row = $(`
+    <div id="receipt-${receipt.id}" class="receipt">
+        <div class="row">
+          <div class="col-md-2">${receipt.created}</div>
+          <div class="merchant col-md-2">${receipt.merchantName}</div>
+          <div class="amount col-md-2">${receipt.value.toFixed(2)}</div>
+          <div class="tags col-md-6">
+              <span id="${receiptTagSpanId}" class="receiptTag">
+  
+                  <button   id="add-tag-${receipt.id}"
+                            type="button"
+                            class="add-tag btn pull-left"
+                            onclick="toggleTagInput(this, ${receipt.id})">+</button>
+    
+                  <input    id="${inputId}"
+                            type="text"
+                            class="tag_input tag"
+                            onkeypress="tagInputKeyPress(event)">
+    
+                  </span>
+          </div>
+        </div>
+    </div>`);
 
   row.appendTo($('#receiptList'));
 
@@ -135,15 +131,12 @@ function appendReceipt(receipt) {
   for (var i = 0; i < receipt.tags.length; i++) {
     tagHtml(receipt.id, receipt.tags[i]).appendTo($('#' + receiptTagSpanId));
   }
-
 }
 
 
 $(function () {
 
   $.getJSON(api + "/receipts", function (receipts) {
-    //$.getJSON(api + "assets/receipts.json", function (receipts) {
-
     for (var i = 0; i < receipts.length; i++) {
       var receipt = receipts[i];
       appendReceipt(receipt);

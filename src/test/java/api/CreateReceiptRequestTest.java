@@ -20,17 +20,19 @@ public class CreateReceiptRequestTest {
   public void testValid() {
     CreateReceiptRequest receipt = new CreateReceiptRequest();
 
-    //receipt.merchant = "OK";
-    receipt.merchant = "";
+    receipt.merchant = "OK";
     receipt.amount = new BigDecimal(33.44);
 
-    assertThat(validator.validate(receipt), empty());
+    Set<ConstraintViolation<CreateReceiptRequest>> result = validator.validate(receipt);
+    assertThat(result, empty());
+
   }
 
   @Test
   public void testMissingAmount() {
     CreateReceiptRequest receipt = new CreateReceiptRequest();
     receipt.merchant = "OK";
+
 
     //receipt.amount = new BigDecimal(33.44);
     assertThat(validator.validate(receipt), empty());
