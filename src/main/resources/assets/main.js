@@ -1,7 +1,10 @@
-
 const api = "";
 const tagInputPrefix = "tag-input-";
 const tagSpanPrefix = "tags-";
+
+let imageCapture;
+let track;
+
 
 /**
  *
@@ -92,7 +95,9 @@ function removeTag(elem) {
 }
 
 function tagHtml(receiptId, tag) {
-  return $(`<div id="tag-${receiptId}-${tag}" class="tagValue tag" onclick="removeTag(this)">${tag}<span class=""></span></div>`);
+  return $(`
+        <div id="tag-${receiptId}-${tag}" class="tagValue tag" onclick="removeTag(this)">${tag}<span class=""></span></div>
+    `);
 }
 
 function appendReceipt(receipt) {
@@ -111,18 +116,19 @@ function appendReceipt(receipt) {
   
                   <button   id="add-tag-${receipt.id}"
                             type="button"
-                            class="add-tag btn pull-left"
-                            onclick="toggleTagInput(this, ${receipt.id})">+</button>
+                            class="add-tag btn btn-lg glyphicon glyphicon-plus"
+                            onclick="toggleTagInput(this, ${receipt.id})"></button>
     
                   <input    id="${inputId}"
                             type="text"
                             class="tag_input tag"
                             onkeypress="tagInputKeyPress(event)">
-    
+        
                   </span>
           </div>
         </div>
-    </div>`);
+    </div>`
+  );
 
   row.appendTo($('#receiptList'));
 
@@ -133,15 +139,70 @@ function appendReceipt(receipt) {
   }
 }
 
+function attachMediaStream(mediaStream) {
+
+
+  $('video')[0].srcObject = mediaStream;
+  // Saving the track allows us to capture a photo
+  track = mediaStream.getVideoTracks()[0];
+  imageCapture = new ImageCapture(track);
+}
+
+function startVideo() {
+
+  navigator.mediaDevices.getUserMedia({video: {facingMode: {exact: "environment"}}})
+      .then(attachMediaStream)
+      .catch(error => {
+
+        console.log(error);
+
+        navigator.mediaDevices.getUserMedia({video: true})
+            .then(attachMediaStream)
+            .catch(error => {
+              console.log('you are fooked');
+            })
+
+      })
+}
+
+function takeSnapshot() {
+  // create a CANVAS element that is same size as the image
+  imageCapture.grabFrame()
+      .then(img => {
+        const canvas = document.createElement('canvas');
+        canvas.width = img.width;
+        canvas.height = img.height;
+        canvas.getContext('2d').drawImage(img, 0, 0);
+        const base64EncodedImageData = canvas.toDataURL('image/png').split(',')[1];
+        $.ajax({
+          url: "/images",
+          type: "POST",
+          data: base64EncodedImageData,
+          contentType: "text/plain",
+          success: function() {},
+        })
+            .then(response => {
+              $('video').after(`<div>got response: <pre>${JSON.stringify(response)}</pre></div>`);
+            })
+            .always(() => console.log('request complete'));
+        // For debugging, you can uncomment this to see the frame that was captured
+        // $('BODY').append(canvas);
+      });
+}
+
 
 $(function () {
 
-  $.getJSON(api + "/receipts", function (receipts) {
+  //$.getJSON(api + "/receipts", function (receipts) {
+  $.getJSON("./assets/receipts.json", function (receipts) {
     for (var i = 0; i < receipts.length; i++) {
       var receipt = receipts[i];
       appendReceipt(receipt);
     }
-
   });
+
+  $('#start-camera').on('click', startVideo);
+  $('video').on('play', () => $('#take-pic').prop('disabled', false));
+  $('#take-pic').on('click', takeSnapshot);
 
 });

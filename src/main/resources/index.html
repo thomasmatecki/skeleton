@@ -20,25 +20,38 @@
 </head>
 <body>
 <div class="container">
+
     <div class="row header">
 
         <div class="col-md-8">
             <h1>My Receipts</h1>
         </div>
+
         <div class="col-md-4">
             <button id="add-receipt"
                     type="button"
                     class="btn btn-primary btn-lg pull-right"
                     data-toggle="modal" data-target="#new-receipt">Add Receipt
             </button>
+
+            <button id="start-camera"
+                    type="button"
+                    class="btn btn-primary btn-lg"
+                    data-toggle="modal"
+                    data-target="#camera-dialog">Start Video
+            </button>
         </div>
+
+
     </div>
+
     <div id="receiptList" class="row">
         <div class="col-md-2"><h3>Created</h3></div>
         <div class="col-md-2"><h3>Merchant</h3></div>
         <div class="col-md-2"><h3>Amount</h3></div>
         <div class="col-md-6"><h3>Tags</h3></div>
     </div>
+
     <div class="modal fade" role="dialog" id="new-receipt">
 
         <div class="modal-dialog modal-sm" role="document">
@@ -81,6 +94,37 @@
             </div>
         </div>
     </div>
+
+
+    <div class="modal fade" role="dialog" id="camera-dialog">
+
+
+        <div class="modal-dialog modal-sm" role="document">
+
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h4 class="modal-title">Hold Up A Receipt!</h4>
+                </div>
+
+
+                <div class="modal-body" id="vidwrap">
+                    <video autoplay width="100%" height="100%"></video>
+                </div>
+
+                <div class="modal-footer">
+                    <button id="take-pic"
+                            type="button"
+                            class="btn btn-primary"
+                            disabled="false">Take a Snapshot!
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
 </div>
 </body>
 </html>
