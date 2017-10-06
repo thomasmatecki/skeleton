@@ -1,4 +1,4 @@
-#/usr/bin/env bash
+#!/usr/bin/env bash
 
 gradle distTar
 docker build -t docker.io/thomasmatecki/cs5356:latest .

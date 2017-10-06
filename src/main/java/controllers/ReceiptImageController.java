@@ -1,8 +1,8 @@
 package controllers;
 
 import api.ReceiptSuggestionResponse;
-import com.google.cloud.vision.v1.AnnotateImageRequest;
-import com.google.cloud.vision.v1.Feature;
+import com.google.cloud.vision.v1.*;
+import com.google.protobuf.ByteString;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.ws.rs.Consumes;
@@ -10,10 +10,13 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-import java.io.IOException;
 import java.math.BigDecimal;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.util.Base64;
+import java.util.Collections;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import static java.lang.System.out;
 
 @Path("/images")
 @Consumes(MediaType.TEXT_PLAIN)
@@ -25,7 +28,9 @@ public class ReceiptImageController {
     // DOCUMENT_TEXT_DETECTION is not the best or only OCR method available
 
     Feature ocrFeature = Feature.newBuilder().setType(Feature.Type.TEXT_DETECTION).build();
+
     this.requestBuilder = AnnotateImageRequest.newBuilder().addFeatures(ocrFeature);
+
 
   }
 
@@ -43,16 +48,7 @@ public class ReceiptImageController {
   @POST
   public ReceiptSuggestionResponse parseReceipt(@NotEmpty String base64EncodedImage) throws Exception {
 
-    String merchantName = null;
-    BigDecimal amount = null;
-
-    try {
-      Files.write(Paths.get("base64EncodedImage.dat"), base64EncodedImage.getBytes());
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
-
-    /*Image img = Image.newBuilder().setContent(ByteString.copyFrom(Base64.getDecoder().decode(base64EncodedImage))).build();
+    Image img = Image.newBuilder().setContent(ByteString.copyFrom(Base64.getDecoder().decode(base64EncodedImage))).build();
 
     AnnotateImageRequest request = this.requestBuilder.setImage(img).build();
 
@@ -61,22 +57,28 @@ public class ReceiptImageController {
       BatchAnnotateImagesResponse responses = client.batchAnnotateImages(Collections.singletonList(request));
       AnnotateImageResponse res = responses.getResponses(0);
 
-      String merchantName = null;
-      BigDecimal amount = null;
+      String text = res.getFullTextAnnotation().getText();
+
+      String merchantName = text.split("\\n")[0];
+
+      Pattern amountPattern = Pattern.compile("^(\\d*[.]\\d\\d*)", Pattern.MULTILINE);
+
+      Matcher amountMatches = amountPattern.matcher(text);
+      String lastAmount = null;
+
+      while (amountMatches.find()) {
+        lastAmount = amountMatches.group();
+      }
+
+      BigDecimal amount = new BigDecimal(lastAmount);
 
 
-      // Your Algo Here!!
-      // Sort text annotations by bounding polygon.  Top-most non-decimal text is the merchant
-      // bottom-most decimal text is the total amount
+      return new ReceiptSuggestionResponse(merchantName, amount);
+
+    } /*catch (IndexOutOfBoundsException iob) {
 
 
-      for (EntityAnnotation annotation : res.getTextAnnotationsList()) {
-        out.printf("Position : %s\n", annotation.getBoundingPoly());
-        out.printf("Text: %s\n", annotation.getDescription());
-      }*/
+    }*/
 
-    //TextAnnotation fullTextAnnotation = res.getFullTextAnnotation();
-    return new ReceiptSuggestionResponse(merchantName, amount);
   }
 }
-

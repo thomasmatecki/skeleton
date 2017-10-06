@@ -20,9 +20,7 @@
 </head>
 <body>
 <div class="container">
-
     <div class="row header">
-
         <div class="col-md-8">
             <h1>My Receipts</h1>
         </div>
@@ -55,26 +53,33 @@
     <div class="modal fade" role="dialog" id="new-receipt">
 
         <div class="modal-dialog modal-sm" role="document">
+
             <div class="modal-content">
                 <div class="modal-header">
                     <h4 class="modal-title">Add Receipt</h4>
                 </div>
 
+
                 <div class="modal-body">
+
                     <form id="receipt-form">
+
                         <div class="form-group">
                             <input id="merchant"
                                    type="text"
                                    class="form-control"
                                    placeholder="Merchant">
                         </div>
+
                         <div class="form-group">
                             <input id="amount"
-                                   type="text"
+                                   type="number"
+                                   step="any"
                                    class="form-control"
                                    placeholder="Amount">
                         </div>
                     </form>
+
                 </div>
 
                 <div class="modal-footer">
@@ -91,6 +96,7 @@
                             data-dismiss="modal">Save
                     </button>
                 </div>
+
             </div>
         </div>
     </div>
@@ -113,9 +119,17 @@
                 </div>
 
                 <div class="modal-footer">
-                    <button id="take-pic"
+
+                    <button id="cancel-pic"
                             type="button"
                             class="btn btn-primary"
+                            data-dismiss="modal">Cancel
+                    </button>
+
+                    <button id="take-pic"
+                            type="button"
+                            class="btn btn-default"
+                            data-dismiss="modal"
                             disabled="false">Take a Snapshot!
                     </button>
                 </div>

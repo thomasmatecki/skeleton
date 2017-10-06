@@ -166,7 +166,7 @@ function startVideo() {
 }
 
 function takeSnapshot() {
-  // create a CANVAS element that is same size as the image
+
   imageCapture.grabFrame()
       .then(img => {
         const canvas = document.createElement('canvas');
@@ -174,27 +174,31 @@ function takeSnapshot() {
         canvas.height = img.height;
         canvas.getContext('2d').drawImage(img, 0, 0);
         const base64EncodedImageData = canvas.toDataURL('image/png').split(',')[1];
+
         $.ajax({
           url: "/images",
           type: "POST",
           data: base64EncodedImageData,
           contentType: "text/plain",
-          success: function() {},
-        })
-            .then(response => {
-              $('video').after(`<div>got response: <pre>${JSON.stringify(response)}</pre></div>`);
-            })
-            .always(() => console.log('request complete'));
-        // For debugging, you can uncomment this to see the frame that was captured
-        // $('BODY').append(canvas);
+          success: function () {
+          },
+        }).then(response => {
+
+
+          $('#new-receipt').modal('show');
+          $('#merchant').val(response.merchantName);
+          $('#amount').val(response.amount);
+
+        }).always(() => console.log('request complete'));
       });
+
 }
 
 
 $(function () {
 
-  //$.getJSON(api + "/receipts", function (receipts) {
-  $.getJSON("./assets/receipts.json", function (receipts) {
+  $.getJSON(api + "/receipts", function (receipts) {
+  //$.getJSON("./assets/receipts.json", function (receipts) {
     for (var i = 0; i < receipts.length; i++) {
       var receipt = receipts[i];
       appendReceipt(receipt);
