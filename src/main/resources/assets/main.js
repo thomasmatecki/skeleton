@@ -198,7 +198,6 @@ function takeSnapshot() {
 $(function () {
 
   $.getJSON(api + "/receipts", function (receipts) {
-  //$.getJSON("./assets/receipts.json", function (receipts) {
     for (var i = 0; i < receipts.length; i++) {
       var receipt = receipts[i];
       appendReceipt(receipt);
